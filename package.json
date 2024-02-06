@@ -1,0 +1,41 @@
+{
+  "name": "crud-api",
+  "version": "1.0.0",
+  "description": "Simple CRUD API using in-memory database underneath.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "nodemon src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZhEkA717/crud-api-nodejs.git"
+  },
+  "author": "Evgeniy Grushevskiy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ZhEkA717/crud-api-nodejs/issues"
+  },
+  "homepage": "https://github.com/ZhEkA717/crud-api-nodejs#readme",
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/connect": "^3.4.38",
+    "@types/node": "^20.11.16",
+    "@types/uuid": "^9.0.8",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "cross-env": "^7.0.3",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "nodemon": "^3.0.3",
+    "prettier": "^3.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect": "^3.7.0",
+    "dotenv": "^16.4.1",
+    "uuid": "^9.0.1"
+  }
+}
