@@ -1,7 +1,7 @@
 import { UserBadRequestError } from "../Errors/customErrors";
-import { IUser } from "../services/user.model";
+import { CreateUser, IUser } from "../services/user.model";
 
-export const userValidate = (user: IUser) => {
+export const userValidate = (user: CreateUser) => {
     const { username, age, hobbies } = user;
     if (!username || typeof username !== 'string')
         throw new UserBadRequestError('username');
