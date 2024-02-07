@@ -1,4 +1,3 @@
-import { v4 } from "uuid";
 import { IUser } from "../services/user.model";
 
 export enum SuccessCodes {
