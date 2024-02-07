@@ -18,9 +18,9 @@ export const createServer = (port = envConfig.SERVER_PORT) => {
     const server = http.createServer(async (req, res) => {
         const method = req.method as MethodType;
         try {
-            if (req.url !== USER_URL && method !== "GET" ) {
-                throw new NotFoundEndpointError();
-            }
+            // if (req.url !== USER_URL && method !== "GET" ) {
+            //     throw new NotFoundEndpointError();
+            // }
 
             if (method === 'OPTIONS') {
                 preflightRequest(req, res);

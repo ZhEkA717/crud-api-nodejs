@@ -26,3 +26,15 @@ export const createNewUser = (user: CreateUser): IUser => {
     
     return newUser;
 }
+
+export const deleteUserById = (id: string) => {
+    if (!validate(id)) throw new InvalidIdUUIDError(id);
+    
+    const existingUser: IUser | undefined = searchUser(id);
+
+    if (existingUser) {
+        const dataBase = getDataBase();
+        const index: number = dataBase.indexOf(existingUser);
+        dataBase.splice(index, 1);
+    }
+}
