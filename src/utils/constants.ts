@@ -9,7 +9,6 @@ export enum SuccessCodes {
 
 export const USER_URL = '/api/user';
 
-
 const dataBaseUsers: IUser[] = [];
 
 export const getDataBase = (): IUser[] => dataBaseUsers;

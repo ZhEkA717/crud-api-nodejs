@@ -4,7 +4,8 @@ import { createUser, deleteUser, getUser, updateUser } from "../services/user.ro
 import { MethodType } from "./server.types";
 import { preflightRequest } from "../utils/network";
 import { USER_URL } from "../utils/constants";
-import { IRequest } from "./server.interfaces";
+import { NotFoundEndpointError } from "../Errors/customErrors";
+import { handleError } from "../Errors/handleError";
 
 const SERVER_USERS = {
     GET: getUser,
@@ -14,22 +15,20 @@ const SERVER_USERS = {
 }
 
 export const createServer = (port = envConfig.SERVER_PORT) => {
-    const server = http.createServer((req, res) => {
+    const server = http.createServer(async (req, res) => {
         const method = req.method as MethodType;
-        
         try {
-
-            if (!req.url?.startsWith(USER_URL)) {
-                throw new Error('endpoint not exist');
+            if (req.url !== USER_URL && method !== "GET" ) {
+                throw new NotFoundEndpointError();
             }
 
             if (method === 'OPTIONS') {
                 preflightRequest(req, res);
             } else {
-                SERVER_USERS[method](req, res);
+                await SERVER_USERS[method](req, res)
             }
         } catch(err) {
-            console.log(err);
+            handleError(req, res, err);
         }
     });
     

@@ -1,10 +1,11 @@
 import { RouterCallbackFunc } from '../server/server.types';
 import { SuccessCodes, USER_URL } from '../utils/constants';
 import { createNewUser, getAllUsers, searchUser } from './user.service';
-import { CreateUser, IUser } from './user.model';
+import { IUser } from './user.model';
 import { commonJSONResponseHeaders } from '../utils/network';
 import { ServerResponse } from 'http';
 import { IRequest } from '../server/server.interfaces';
+import { NotFoundEndpointError, InvalidBodyError } from '../Errors/customErrors';
 
 export const getUser: RouterCallbackFunc = (req, res) => {
     const { url } = req;
@@ -15,31 +16,31 @@ export const getUser: RouterCallbackFunc = (req, res) => {
             break;
         case `${USER_URL}/${userId}`: getUserById(req, res, userId);
             break;
+        default: throw new NotFoundEndpointError();
     }
 }
 
-const getUsers:RouterCallbackFunc = (req, res) => {
+const getUsers:RouterCallbackFunc = (_, res) => {
     const users: IUser[] = getAllUsers();
     res.writeHead(SuccessCodes.OK, commonJSONResponseHeaders);
     res.end(JSON.stringify(users));
 }
 
-const getUserById = (req: IRequest, res: ServerResponse, userId: string | undefined) => {
-    if (userId) {
+const getUserById = (_: IRequest, res: ServerResponse, userId: string | undefined) => {
+    if (userId || userId === '') {
         const currentUser: IUser | undefined = searchUser(userId);
         res.writeHead(SuccessCodes.OK, commonJSONResponseHeaders);
         res.end(JSON.stringify(currentUser));
-    } else {
-        throw new Error('Board ID not provided');
     }
 }
 
 export const createUser: RouterCallbackFunc = async (req, res) => {
     await bodyParser(req);
-    if (!req.body) throw new Error('not exist body data');
-    const data: CreateUser = req.body;
-    const newUser: IUser = createNewUser(data);
-    res.writeHead(SuccessCodes.Created, JSON.stringify(commonJSONResponseHeaders));
+    
+    if (!req.body?.trim()) throw new InvalidBodyError();
+
+    const newUser: IUser = createNewUser(JSON.parse(req.body));
+    res.writeHead(SuccessCodes.Created, commonJSONResponseHeaders);
     res.end(JSON.stringify(newUser));
 }
 
@@ -58,8 +59,8 @@ const bodyParser = async (req: IRequest) => {
             .on('error', () => { reject(); })
             .on('data', (chunk: string) => { totalChunked += chunk; })
             .on('end', () => {
-                req.body = JSON.parse(totalChunked); // Adding Parsed Chunked into request.body
-                resolve(totalChunked);
+                req.body = totalChunked;
+                resolve(null);
             });
     });
 };
