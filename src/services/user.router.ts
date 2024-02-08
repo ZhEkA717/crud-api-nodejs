@@ -38,6 +38,7 @@ export const createUser: RouterCallbackFunc = async (req, res) => {
     await bodyParser(req);
     if (req.url !== USER_URL) throw new NotFoundEndpointError();
     if (!req.body?.trim()) throw new InvalidBodyError();
+    if (req.body === 'null') throw new InvalidBodyError();
 
     const newUser: IUser = createNewUser(JSON.parse(req.body));
     res.writeHead(SuccessCodes.Created, commonJSONResponseHeaders);
@@ -59,6 +60,7 @@ export const updateUser: RouterCallbackFunc = async (req, res) => {
     await bodyParser(req);
     if (!req.url?.startsWith(USER_URL) ) throw new NotFoundEndpointError();
     if (!req.body?.trim()) throw new InvalidBodyError();
+    if (req.body === 'null') throw new InvalidBodyError();
     
     const { url } = req;
     const id: string | undefined = url?.substring(`${USER_URL}/`.length);

@@ -1,8 +1,7 @@
-import { envConfig } from "../common/config";
+import 'dotenv/config';
 import http from 'http';
 import { createUser, deleteUser, getUser, updateUser } from "../services/user.router";
 import { MethodType } from "./server.types";
-import { preflightRequest } from "../utils/network";
 import { handleError } from "../Errors/handleError";
 
 const SERVER_USERS = {
@@ -12,26 +11,28 @@ const SERVER_USERS = {
     PUT: updateUser
 }
 
-export const createServer = (port = envConfig.SERVER_PORT) => {
+const PORT = process.env.SERVER_PORT || 4000;
+
+export const createServer = () => {
     const server = http.createServer(async (req, res) => {
         const method = req.method as MethodType;
         try {
-            if (method === 'OPTIONS') {
-                preflightRequest(req, res);
-            } else {
-                await SERVER_USERS[method](req, res)
-            }
+            await SERVER_USERS[method](req, res)
         } catch(err) {
             handleError(req, res, err);
         }
     });
     
-    server.listen(port, () => {
-        console.log(`Server running on Port ${port}`)
+    server.listen(PORT, () => {
+        console.log(`Server running on Port ${PORT}`)
     });
     
     return server;
 }
 
 
+
+function preflightRequest(req: http.IncomingMessage, res: http.ServerResponse<http.IncomingMessage> & { req: http.IncomingMessage; }) {
+    throw new Error('Function not implemented.');
+}
 

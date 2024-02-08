@@ -4,12 +4,14 @@ export const enum ErrorCodes {
     'SERVER_ERROR' = 500,
 }
 
-const enum ErrorMessages {
+export const enum ErrorMessages {
     BAD_REQUEST = 'Bad Request',
     NOT_FOUND = 'Not Found',
     SERVER_INTERNAL = 'Server Internal Error',
     NOT_FOUND_ENDPOINT = 'NOT FOUND ENDPOINT',
     INVALID_BODY = 'Invalid requests body',
+    EMPTY_ID = 'Id is empty',
+    INVALID_UUID = 'Id is invalid (not uuid)'
 }
 
 export class BaseError extends Error {
@@ -38,8 +40,8 @@ export class NotFoundEndpointError extends BaseError {
 export class InvalidIdUUIDError extends BaseError {
     constructor(id: string) {
         id === '' 
-            ? super('Id is empty', ErrorCodes.BAD_REQUEST)
-            : super(`ID = "${id}" is invalid (not uuid)`, ErrorCodes.BAD_REQUEST);
+            ? super(ErrorMessages.EMPTY_ID, ErrorCodes.BAD_REQUEST)
+            : super(ErrorMessages.INVALID_UUID, ErrorCodes.BAD_REQUEST);
     }
 }
 
