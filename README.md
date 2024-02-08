@@ -26,5 +26,3 @@
 - npm run start:multi -->
 ### To run tests
 - npm run test
-### To run percent of coverage
-- npm run test:coverage
