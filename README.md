@@ -25,5 +25,7 @@
 - npm run start:prod
 <!-- ### To run in load balancer mode
 - npm run start:multi -->
+
+## Run tests
 ### To run tests
 - npm run test
