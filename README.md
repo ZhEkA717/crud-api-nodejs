@@ -16,3 +16,15 @@
     - Server should answer with `status code` **204** if the record is found and deleted
     - Server should answer with `status code` **400** and corresponding message if `userId` is invalid (not `uuid`)
     - Server should answer with `status code` **404** and corresponding message if record with `id === userId` doesn't exist
+
+## Start server
+### To run in development mode
+- npm run start:dev
+### To run run in production mode
+- npm run start:prod
+<!-- ### To run in load balancer mode
+- npm run start:multi -->
+### To run tests
+- npm run test
+### To run percent of coverage
+- npm run test:coverage
