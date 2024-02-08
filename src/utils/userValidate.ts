@@ -1,5 +1,5 @@
 import { UserBadRequestError } from "../Errors/customErrors";
-import { CreateUser, IUser } from "../services/user.model";
+import { CreateUser } from "../services/user.model";
 
 export const userValidate = (user: CreateUser) => {
     const { username, age, hobbies } = user;

@@ -1,3 +1,5 @@
 import { createServer } from "./server/server";
 
-createServer();
+const start = () => { createServer(); }
+
+start();

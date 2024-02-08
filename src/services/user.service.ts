@@ -52,8 +52,5 @@ export const updateUserById = (data: CreateUser, id: string): IUser => {
         dataBase[index] = {...dataBase[index], ...data};
     }
     
-    return {
-        id,
-        ...data
-    }
+    return { id, ...data }
 }

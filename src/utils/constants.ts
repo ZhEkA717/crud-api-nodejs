@@ -6,7 +6,7 @@ export enum SuccessCodes {
     "NoContent" = 204
 }
 
-export const USER_URL = '/api/user';
+export const USER_URL = '/api/users';
 
 const dataBaseUsers: IUser[] = [];
 
