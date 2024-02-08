@@ -1,4 +1,5 @@
-# Endpoint `api/users`:
+# Simple CRUD API NodeJS
+## Endpoint `api/users`:
 - **GET** `api/users` is used to get all persons
     - Server should answer with `status code` **200** and all users records
 - **GET** `api/users/{userId}` 
