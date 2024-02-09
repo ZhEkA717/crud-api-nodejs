@@ -75,7 +75,7 @@ describe('\nPOST api/users', () => {
         const res = await serverRequest.post(USER_URL).send([]);
         expect(res.statusCode).toEqual(ErrorCodes.BAD_REQUEST);
     });
-    it ('Server should answer with status code 400 if body is empty body', async () => {
+    it ('Server should answer with status code 400 if body is empty object', async () => {
         await serverRequest.post(USER_URL).send({})
             .expect(ErrorCodes.BAD_REQUEST);
     });
@@ -242,7 +242,7 @@ describe("\nPUT api/users/{userId}", () => {
         const res = await serverRequest.put(`${USER_URL}/${createdUser.id}`).send([]);
         expect(res.statusCode).toEqual(ErrorCodes.BAD_REQUEST);
     });
-    it ('Server should answer with status code 400 if body is empty body', async () => {
+    it ('Server should answer with status code 400 if body is empty object', async () => {
         await serverRequest.put(`${USER_URL}/${createdUser.id}`).send({})
             .expect(ErrorCodes.BAD_REQUEST);
     });
