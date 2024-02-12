@@ -1,18 +1,8 @@
 import cluster from 'node:cluster';
 import { cpus } from 'os';
-import { createServer, router } from './server/server';
-import { RequestOptions, request } from 'http';
-import { getHostnameFromReq } from './utils/network';
-
-let currentWorker: number = 0;
-
+import { createServer } from './server/server';
 
 const workersData = new Map<number, number>();
-
-const getIndexNextWorker = (): number => {
-    currentWorker %= cpus().length;
-    return currentWorker++;
-};
 
 if (cluster.isPrimary) {
     const cpusCount = cpus().length;
@@ -25,30 +15,6 @@ if (cluster.isPrimary) {
     }
 
     const server = createServer();
-
-    server.on('request', async (req, res) => {
-        const currentPort = workersData.get(getIndexNextWorker() + 1);
-        const { url, method, headers } = req;
-        const options: RequestOptions = {
-            hostname: getHostnameFromReq(req),
-            port: currentPort,
-            path: url,
-            method,
-            headers
-        }
-
-        const proxy = request(options, async (proxyResponse) => {
-            await router(proxyResponse, res)
-            proxyResponse.pipe(res, {
-                end: true,
-            });
-        });
-
-        req.pipe(proxy, {
-            end: true,
-        });
-    });
-
     server.listen(4000, () => {
         console.log(`Load balancer server is running: http://localhost:${4000}`);
     });
