@@ -2,7 +2,7 @@ import { RouterCallbackFunc } from '../server/server.types';
 import { SuccessCodes, USER_URL } from '../utils/constants';
 import { createNewUser, deleteUserById, getAllUsers, searchUser, updateUserById } from './user.service';
 import { IUser } from './user.model';
-import { commonJSONResponseHeaders } from '../utils/network';
+import { bodyParser, commonJSONResponseHeaders } from '../utils/network';
 import { ServerResponse } from 'http';
 import { IRequest } from '../server/server.interfaces';
 import { NotFoundEndpointError, InvalidBodyError, NotFoundError } from '../Errors/customErrors';
@@ -10,7 +10,7 @@ import { NotFoundEndpointError, InvalidBodyError, NotFoundError } from '../Error
 export const getUser: RouterCallbackFunc = (req, res) => {
     const { url } = req;
     const userId: string | undefined = url?.substring(`${USER_URL}/`.length);
-  
+    
     switch(url) {
         case USER_URL: getUsers(req, res);
             break;
@@ -71,16 +71,3 @@ export const updateUser: RouterCallbackFunc = async (req, res) => {
         res.end(JSON.stringify(user));
     }
 }
-
-const bodyParser = async (req: IRequest) => {
-    return new Promise((resolve, reject) => {
-        let totalChunked = '';
-        req
-            .on('error', () => { reject(); })
-            .on('data', (chunk: string) => { totalChunked += chunk; })
-            .on('end', () => {
-                req.body = totalChunked;
-                resolve(null);
-            });
-    });
-};

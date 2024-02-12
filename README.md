@@ -23,8 +23,8 @@
 - npm run start:dev
 ### To run run in production mode
 - npm run start:prod
-<!-- ### To run in load balancer mode
-- npm run start:multi -->
+### To run in load balancer mode
+- npm run start:multi
 
 ## Run tests
 ### To run tests
