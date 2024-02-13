@@ -14,6 +14,11 @@ const createWorkers = () => {
         worker.send({ port });
 
         if (worker) workersData.set(worker?.id, port);
+
+        worker.on("message", (msg) => {
+            const port = workersData.get(msg.id);
+            console.log(`Worker pid: ${msg.pid}. Request from port: ${port}`)
+        })
     }
 }
 
@@ -25,7 +30,7 @@ if (cluster.isPrimary) {
 if (cluster.isWorker) {
     process.on('message', (msg: { port: number }) => {
         createServer().listen(msg.port, () => {
-            console.log(`Fork server is running: http://localhost:${msg.port}`);
+            console.log(`Worker pid: ${process.pid}. Fork server is running: http://localhost:${msg.port}`);
         })
     });
     cluster.on('exit', (worker, code, signal) => {

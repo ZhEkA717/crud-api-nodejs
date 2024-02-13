@@ -4,6 +4,7 @@ import { createUser, deleteUser, getUser, updateUser } from "../services/user.ro
 import { MethodType, RouterCallbackFunc } from "./server.types";
 import { handleError } from "../Errors/handleError";
 import { IRequest } from './server.interfaces';
+import cluster from 'cluster';
 
 const SERVER_USERS = {
     GET: getUser,
@@ -19,7 +20,14 @@ export const createServer = () => {
 }
 
 export const router = async (req:IRequest, res:ServerResponse) => {
-    console.log(`Request from ${req.headers.host}${req.url}`);
+
+    if(cluster.isWorker) {
+        cluster.worker?.send({
+            id: cluster.worker.id,
+            pid: process.pid
+        });
+    }
+
     const method = req.method as MethodType;
     try {
         await SERVER_USERS[method](req, res)

@@ -6,7 +6,6 @@ import { workersData } from "../cluster";
 
 let currentWorker: number = 0;
 
-
 const getIndexNextWorker = (): number => {
     currentWorker %= cpus().length;
     return currentWorker++;
@@ -14,19 +13,10 @@ const getIndexNextWorker = (): number => {
 
 export function createProxyServer(): void {
     const proxyServer = http.createServer((req, res) => {
-        const workerPort = workersData.get(getIndexNextWorker() + 1);        
+        const port = workersData.get(getIndexNextWorker() + 1);        
 
-        const { url, method, headers } = req;
-
-        headers.host = `localhost:${workerPort}`;
-
-        const options = {
-            method,
-            headers,
-            joinDuplicatedHeaders: true,
-            port: workerPort,
-            path: url,
-        };
+        const { url: path, method, headers } = req;
+        const options = { method, headers, port, path };
 
         const proxyRequest = http.request(options, (proxyRes) => {
             proxyRes.pipe(
