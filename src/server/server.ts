@@ -19,6 +19,7 @@ export const createServer = () => {
 }
 
 export const router = async (req:IRequest, res:ServerResponse) => {
+    console.log(`Request from ${req.headers.host}${req.url}`);
     const method = req.method as MethodType;
     try {
         await SERVER_USERS[method](req, res)

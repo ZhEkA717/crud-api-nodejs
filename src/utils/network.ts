@@ -2,6 +2,7 @@ import { IncomingMessage } from "http";
 import { IRequest } from "../server/server.interfaces";
 
 export const getHostnameFromReq = (req: IncomingMessage) => req.headers.host?.split(':')[0];
+
 export const bodyParser = async (req: IRequest) => {
     return new Promise((resolve, reject) => {
         let totalChunked = '';
@@ -14,6 +15,7 @@ export const bodyParser = async (req: IRequest) => {
             });
     });
 }; 
+
 const CORSHeaders: { [header: string]: string } = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",

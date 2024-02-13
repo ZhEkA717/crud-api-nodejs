@@ -1,23 +1,25 @@
 import cluster from 'node:cluster';
 import { cpus } from 'os';
 import { createServer } from './server/server';
+import { SERVER_PORT } from './utils/constants';
+import { createProxyServer } from './balancer';
 
-const workersData = new Map<number, number>();
+export const workersData = new Map<number, number>();
 
-if (cluster.isPrimary) {
+const createWorkers = () => {
     const cpusCount = cpus().length;
     for (let i = 1; i <= cpusCount; i++) {
         const worker = cluster.fork();
-        const port = 4000 + i;
+        const port = SERVER_PORT + i;
         worker.send({ port });
 
         if (worker) workersData.set(worker?.id, port);
     }
+}
 
-    const server = createServer();
-    server.listen(4000, () => {
-        console.log(`Load balancer server is running: http://localhost:${4000}`);
-    });
+if (cluster.isPrimary) {
+    createProxyServer();
+    createWorkers();
 }
 
 if (cluster.isWorker) {
