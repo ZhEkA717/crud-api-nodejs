@@ -3,6 +3,7 @@ import { cpus } from 'os';
 import { createServer } from './server/server';
 import { SERVER_PORT } from './utils/constants';
 import { createProxyServer } from './balancer';
+import { createServerDB } from './serverDB';
 
 export const workersData = new Map<number, number>();
 
@@ -23,12 +24,13 @@ const createWorkers = () => {
 }
 
 if (cluster.isPrimary) {
+    createServerDB();
     createProxyServer();
     createWorkers();
 }
 
 if (cluster.isWorker) {
-    process.on('message', (msg: { port: number }) => {
+    process.on('message', async (msg: { port: number }) => {
         createServer().listen(msg.port, () => {
             console.log(`Worker pid: ${process.pid}. Fork server is running: http://localhost:${msg.port}`);
         })

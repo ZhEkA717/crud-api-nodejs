@@ -1,18 +1,4 @@
-export const enum ErrorCodes {
-    'BAD_REQUEST' = 400,
-    'NOT_FOUND' = 404,
-    'SERVER_ERROR' = 500,
-}
-
-export const enum ErrorMessages {
-    BAD_REQUEST = 'Bad Request',
-    NOT_FOUND = 'Not Found',
-    SERVER_INTERNAL = 'Server Internal Error',
-    NOT_FOUND_ENDPOINT = 'NOT FOUND ENDPOINT',
-    INVALID_BODY = 'Invalid requests body',
-    EMPTY_ID = 'Id is empty',
-    INVALID_UUID = 'Id is invalid (not uuid)'
-}
+import { ErrorCodes, ErrorMessages } from "../utils/constants";
 
 export class BaseError extends Error {
     message: string;

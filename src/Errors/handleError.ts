@@ -1,5 +1,6 @@
 import { RouterCallbackFunc } from "../server/server.types";
-import { BaseError, ErrorCodes, NotFoundError, ServerInternalError } from "./customErrors";
+import { ErrorCodes } from "../utils/constants";
+import { BaseError, NotFoundError, ServerInternalError } from "./customErrors";
 
 export const handleError: RouterCallbackFunc = (_, res, err) => {
     if (err instanceof BaseError) {

@@ -1,7 +1,6 @@
 import request from "supertest";
 import { createServer } from "../server/server";
-import { SuccessCodes, USER_URL } from "../utils/constants";
-import { ErrorCodes, ErrorMessages } from "../Errors/customErrors";
+import { ErrorCodes, ErrorMessages, SuccessCodes, USER_URL } from "../utils/constants";
 import { v4 } from "uuid";
 import { IUser } from "../services/user.model";
 import { updateUser } from "../services/user.router";

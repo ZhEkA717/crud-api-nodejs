@@ -15,7 +15,9 @@ const SERVER_USERS = {
 
 export const createServer = () => {
     const server = http.createServer();
-    server.on('request', router);    
+    server.on('request', async (req, res) => {
+        await router(req, res);
+    });    
     return server;
 }
 
