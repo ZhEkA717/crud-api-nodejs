@@ -49,7 +49,6 @@ export const updateUserById = async (data: CreateUser, id: string): Promise<IUse
     userValidate(data);
     let index: number = -1;
     const existingUser: IUser | undefined = await searchUser(id);
-    console.log(existingUser);
     if (existingUser) {
         const dataBase: IUser[] = await getDataBaseApi();
         dataBase.forEach((item, i) => {
@@ -57,7 +56,6 @@ export const updateUserById = async (data: CreateUser, id: string): Promise<IUse
                 index = i;
             }
         })
-        console.log(index);
         index >= 0 && (dataBase[index] = { id, ...data});
         await updateDataBaseApi(dataBase);
     }
